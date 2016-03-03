@@ -9,7 +9,10 @@
 #define STAT_H_
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
+//this structure supports lanes with 96 tiles only
 #define SIDE_NUMBER 2
 #define SWATCH_PER_SIDE_NUMBER  3
 #define TILE_PER_SWATCH_NUMBER  16
@@ -17,31 +20,32 @@
 
 struct illumina_tile_stat
 	{
-	//this structure supports lanes with 96 tiles only
-	char *instrument_number[25];
-	long long int run_number;
-	char *flowcell_id[25];
-	int lane_number;
-	long long unsigned int tile_stats[SIDE_NUMBER][SWATCH_PER_SIDE_NUMBER][TILE_PER_SWATCH_NUMBER];
+
+	char *instrument_id;
+	unsigned long long int run_number;
+	char *flowcell_id;
+	unsigned int lane_number;
+	unsigned long long int tile_stats[SIDE_NUMBER][SWATCH_PER_SIDE_NUMBER][TILE_PER_SWATCH_NUMBER];
 	};
 
-int parse_read_name(char *read_name, char *parsed[])
+struct read_name
 	{
-	// read  name template @<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos> <read>:<is filtered>:<control number>:<index sequence>
-	char *first_name_part = strtok(read_name, " "); // at moment i am not interested in read_id and following info
-	char *first_name_part_2 = strtok(first_name_part, "#");
-	//printf("%s\n", first_name_part_2);
+	char *instrument_id;
+	unsigned long long int run_number;
+	char *flowcell_id;
+	unsigned int lane_number;
+	short unsigned int side;
+	short unsigned int swatch;
+	short int tile;
+	};
 
-	char *token = strtok(first_name_part_2, ":");
-	short unsigned int i = 0;
-	while(i < 5)
-	   {
-	   //printf("%s\n", token );
-	   parsed[i] = token;
-	   token = strtok(NULL, ":");
-	   i++;
-	   }
-	return 0;
-	}
+#define PARSE_TILE_NUMBER(tile_str, tile_numbers)	\
+	tile_numbers[0] = tile_str[0] - '0';	\
+	tile_numbers[1] = tile_str[1] - '0';	\
+	tile_numbers[2] = atoi(tile_str+2);	\
+
+struct read_name parse_read_name(char *name, int mode);
+
+int compare_read_name_with_stat_struct(struct illumina_tile_stat stat_struct, struct read_name name);
 
 #endif /* STAT_H_ */

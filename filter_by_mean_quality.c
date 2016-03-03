@@ -1,11 +1,4 @@
-#include <zlib.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
-
-#include "kseq.h"
-#include "stat.h"
-#include "parse_options.h"
+#include "filter_by_mean_quality.h"
 
 KSEQ_INIT(gzFile, gzread)
 
@@ -13,16 +6,8 @@ int main(int argc, char *argv[])
 	{
 	//-------------------Parsing options---------------------
 	PARSE_OPTIONS;
-
-	gzFile fp_forward, fp_reverse;
-	FILE *fp_forward_pe_out, *fp_forward_se_out, *fp_reverse_pe_out, *fp_reverse_se_out;
+	//-------------------------------------------------------
 	kseq_t *seq_forward, *seq_reverse;
-	long long int total_score_forward = 0, total_score_reverse = 0;
-	long long int paired = 0, forward_se = 0, reverse_se = 0, discarded_pairs = 0;
-	double mean_score_forward = 0, mean_score_reverse = 0;
-	int len_forward, len_reverse;
-
-	int l_forward, l_reverse;
 
 	fp_forward = gzopen(forward_reads, "r");
 	fp_reverse = gzopen(reverse_reads, "r");
@@ -49,7 +34,7 @@ int main(int argc, char *argv[])
 	fp_reverse_pe_out = fopen(reverse_pe_out_file, "w");
 	fp_reverse_se_out = fopen(reverse_se_out_file, "w");
 
-	char *parsed[5];
+	struct read_name parsed_forward_name;
 
 	while ((l_forward = kseq_read(seq_forward)) >= 0)
 		{
@@ -57,12 +42,9 @@ int main(int argc, char *argv[])
 
 		mean_score_forward = 0;
 
-		parse_read_name(seq_forward->name.s, parsed);
-
-		for (int i = 0; i < 5; i++)
-			{
-			printf("%s\n", parsed[i]);
-			}
+		parsed_forward_name = parse_read_name(seq_forward->name.s, 2);
+		printf("%s\t%s\n", parsed_forward_name.instrument_id, parsed_forward_name.flowcell_id);
+		//printf("%i\t%i\t%i\n", forward_name.side, forward_name.swatch, forward_name.tile);
 
 		len_forward = strlen(seq_forward->qual.s);
 		for (int i =0; i < len_forward; i++)
@@ -117,7 +99,6 @@ int main(int argc, char *argv[])
 					} else discarded_pairs += 1;
 				}
 			}
-
 		}
 
 	//printf("return value: %d\n", l_forward);
@@ -132,5 +113,4 @@ int main(int argc, char *argv[])
 
 	printf("Paires retained:\t%i\nForward only retained:\t%i\nReverse only retained:\t%i\nPairs discarded:\t%i\n", paired, forward_se, reverse_se, discarded_pairs);
 	return 0;
-
 	}
