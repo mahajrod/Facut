@@ -1,0 +1,1 @@
+argp.d: ../argp.c

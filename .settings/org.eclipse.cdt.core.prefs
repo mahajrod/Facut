@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.config.gnu.exe.debug.778492622/LD_LIBRARY_PATH/delimiter=\:
+environment/project/cdt.managedbuild.config.gnu.exe.debug.778492622/LD_LIBRARY_PATH/operation=replace
+environment/project/cdt.managedbuild.config.gnu.exe.debug.778492622/LD_LIBRARY_PATH/value=${LD_LIBRARY_PATH}\:/lib/x86_64-linux-gnu/
+environment/project/cdt.managedbuild.config.gnu.exe.debug.778492622/append=true
+environment/project/cdt.managedbuild.config.gnu.exe.debug.778492622/appendContributed=true
+environment/project/cdt.managedbuild.config.gnu.exe.release.2134322213/LD_LIBRARY_PATH/delimiter=\:
+environment/project/cdt.managedbuild.config.gnu.exe.release.2134322213/LD_LIBRARY_PATH/operation=append
+environment/project/cdt.managedbuild.config.gnu.exe.release.2134322213/LD_LIBRARY_PATH/value=${LD_LIBRARY_PATH}\:/lib/x86_64-linux-gnu/
+environment/project/cdt.managedbuild.config.gnu.exe.release.2134322213/append=true
+environment/project/cdt.managedbuild.config.gnu.exe.release.2134322213/appendContributed=true
