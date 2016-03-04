@@ -39,11 +39,14 @@ int main(int argc, char *argv[])
 		l_reverse = kseq_read(seq_reverse);
 
 		//checking lane
-		parsed_forward_name = parse_read_name(seq_forward->name.s, name_type);
+		read_name_copy = (char *) malloc(seq_forward->name.l + 1);
+		strcpy(read_name_copy, seq_forward->name.s); // copy read  name to retain original name intact because of strtok (it modifies string when split)
+		parsed_forward_name = parse_read_name(read_name_copy, name_type);
 
+		//free(read_name_copy);
 		//INIT_LANE_STAT_BY_READ_NAME(lane_filter_stat_array[0], parsed_forward_name);
 		//printf()
-		//printf("%i\n", compare_read_name_with_stat_struct(lane_filter_stat_array[0], parsed_forward_name));
+		printf("%s\n", parsed_forward_name.flowcell_id);
 
 		lane_index = find_lane(lane_filter_stat_array, parsed_forward_name, number_of_lanes, previous_lane_number);
 
@@ -54,7 +57,8 @@ int main(int argc, char *argv[])
 			INIT_LANE_STAT_BY_READ_NAME(lane_filter_stat_array[lane_index], parsed_forward_name);
 			previous_lane_number = lane_index;
 			number_of_lanes++;
-			}
+			} else free(read_name_copy); // retain copied name in memory only for name of first read in lane;
+
 
 		//printf("%s\t%s\n", parsed_forward_name.instrument_id, parsed_forward_name.flowcell_id);
 		//printf("%i\t%i\t%i\n", forward_name.side, forward_name.swatch, forward_name.tile);

@@ -1,13 +1,13 @@
 #include "stat.h"
 
-struct read_name parse_read_name(char *name, int mode)
+struct read_name parse_read_name(char *name_copy, int mode)
 	{
 	//1: full read  name template @<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos> <read>:<is filtered>:<control number>:<index sequence>
 	//2: short read name template <flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos>#index/read
 	struct read_name parsed_name;
 	char *parsed[5];
 	int tile_numbers[3];
-	char *token = strtok(name, ": #");
+	char *token = strtok(name_copy, ": #");
 	for (int i =0; i < 5; i++)
 	   {
 	   parsed[i] = token;
@@ -38,6 +38,7 @@ struct read_name parse_read_name(char *name, int mode)
 	parsed_name.side = tile_numbers[0];
 	parsed_name.swatch = tile_numbers[1];
 	parsed_name.tile = tile_numbers[2];
+	printf("%s\n", parsed_name.flowcell_id);
 	return parsed_name;
 	}
 
