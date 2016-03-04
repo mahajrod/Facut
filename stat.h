@@ -13,19 +13,23 @@
 #include <stdlib.h>
 
 //this structure supports lanes with 96 tiles only
-#define SIDE_NUMBER 2
-#define SWATCH_PER_SIDE_NUMBER  3
-#define TILE_PER_SWATCH_NUMBER  16
+#define SIDE_NUMBER 2+1
+#define SWATCH_PER_SIDE_NUMBER  3+1
+#define TILE_PER_SWATCH_NUMBER  16+1
+#define	NUMBER_OF_STATISTICS	4
 
+#define BOTH_RETAINED	0
+#define FORWARD_ONLY	1
+#define REVERSE_ONLY	2
+#define	BOTH_DISCARDED	3
 
-struct illumina_tile_stat
+struct illumina_lane_stat
 	{
-
 	char *instrument_id;
 	unsigned long long int run_number;
 	char *flowcell_id;
 	unsigned int lane_number;
-	unsigned long long int tile_stats[SIDE_NUMBER][SWATCH_PER_SIDE_NUMBER][TILE_PER_SWATCH_NUMBER];
+	unsigned long long int tile_stats[SIDE_NUMBER][SWATCH_PER_SIDE_NUMBER][TILE_PER_SWATCH_NUMBER][NUMBER_OF_STATISTICS];
 	};
 
 struct read_name
@@ -42,10 +46,20 @@ struct read_name
 #define PARSE_TILE_NUMBER(tile_str, tile_numbers)	\
 	tile_numbers[0] = tile_str[0] - '0';	\
 	tile_numbers[1] = tile_str[1] - '0';	\
-	tile_numbers[2] = atoi(tile_str+2);	\
+	tile_numbers[2] = atoi(tile_str+2);
+
+#define INIT_LANE_STAT_BY_READ_NAME(lane_stat, read_name) \
+	memset(lane_stat.tile_stats, 0, sizeof lane_stat.tile_stats); /*init array with zeroes*/ \
+	lane_stat.instrument_id = read_name.instrument_id; \
+	lane_stat.run_number = read_name.run_number; \
+	lane_stat.flowcell_id = read_name.flowcell_id; \
+	lane_stat.lane_number = read_name.lane_number;
+
+
 
 struct read_name parse_read_name(char *name, int mode);
 
-int compare_read_name_with_stat_struct(struct illumina_tile_stat stat_struct, struct read_name name);
+int compare_read_name_with_stat_struct(struct illumina_lane_stat stat_struct, struct read_name name);
+int find_lane(struct illumina_lane_stat lane_stats[], struct read_name name, int number_of_lanes, int previous_lane);
 
 #endif /* STAT_H_ */

@@ -34,74 +34,114 @@ int main(int argc, char *argv[])
 	fp_reverse_pe_out = fopen(reverse_pe_out_file, "w");
 	fp_reverse_se_out = fopen(reverse_se_out_file, "w");
 
-	struct read_name parsed_forward_name;
-
 	while ((l_forward = kseq_read(seq_forward)) >= 0)
 		{
 		l_reverse = kseq_read(seq_reverse);
 
-		mean_score_forward = 0;
+		//checking lane
+		parsed_forward_name = parse_read_name(seq_forward->name.s, name_type);
 
-		parsed_forward_name = parse_read_name(seq_forward->name.s, 2);
-		printf("%s\t%s\n", parsed_forward_name.instrument_id, parsed_forward_name.flowcell_id);
+		//INIT_LANE_STAT_BY_READ_NAME(lane_filter_stat_array[0], parsed_forward_name);
+		//printf()
+		//printf("%i\n", compare_read_name_with_stat_struct(lane_filter_stat_array[0], parsed_forward_name));
+
+		lane_index = find_lane(lane_filter_stat_array, parsed_forward_name, number_of_lanes, previous_lane_number);
+
+
+		if (lane_index == -1)
+			{
+			lane_index++;
+			INIT_LANE_STAT_BY_READ_NAME(lane_filter_stat_array[lane_index], parsed_forward_name);
+			previous_lane_number = lane_index;
+			number_of_lanes++;
+			}
+
+		//printf("%s\t%s\n", parsed_forward_name.instrument_id, parsed_forward_name.flowcell_id);
 		//printf("%i\t%i\t%i\n", forward_name.side, forward_name.swatch, forward_name.tile);
 
-		len_forward = strlen(seq_forward->qual.s);
-		for (int i =0; i < len_forward; i++)
+		mean_score_forward = 0;
+		for (int i =0; i < seq_forward->qual.l; i++)
 			{
 			mean_score_forward += seq_forward->qual.s[i];
 			}
-		mean_score_forward /= len_forward;
+		mean_score_forward /= seq_forward->qual.l;
 		mean_score_forward -= quality_offset;
 
 		mean_score_reverse = 0;
-		len_reverse = strlen(seq_reverse->qual.s);
-		for (int i =0; i < len_reverse; i++)
+		for (int i =0; i < seq_reverse->qual.l; i++)
 			{
 			mean_score_reverse += seq_reverse->qual.s[i];
 			}
-		mean_score_reverse /= len_reverse;
+		mean_score_reverse /= seq_reverse->qual.l;
 		mean_score_reverse -= quality_offset;
 
-		/*
-		printf("forward\n");
-		printf("name: %s\n", seq_forward->name.s);
-		if (seq->comment.l) printf("comment: %s\n", seq->comment.s);
-		printf("seq: %s\n", seq_forward->seq.s);
-		if (seq_forward->qual.l) printf("qual: %s\n", seq_forward->qual.s);
-		printf("%f\n", mean_score_forward);
-
-		printf("reverse\n");
-		printf("name: %s\n", seq_reverse->name.s);
-		if (seq->comment.l) printf("comment: %s\n", seq->comment.s);
-		printf("seq: %s\n", seq_reverse->seq.s);
-		if (seq_reverse->qual.l) printf("qual: %s\n", seq_reverse->qual.s);
-		printf("%f\n", mean_score_reverse);
-		*/
-		//printf("%f\t%f\n", mean_score_forward, mean_score_reverse);
 		if ((mean_score_forward >= quality_threshold) && (mean_score_reverse >= quality_threshold))
 			{
 			fprintf(fp_forward_pe_out, "@%s\n%s\n+\n%s\n", seq_forward->name.s, seq_forward->seq.s, seq_forward->qual.s);
 			fprintf(fp_reverse_pe_out, "@%s\n%s\n+\n%s\n", seq_reverse->name.s, seq_reverse->seq.s, seq_reverse->qual.s);
+
+			lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][BOTH_RETAINED]++;
 			paired += 1;
 			} else
 			{
 			if ((mean_score_forward >= quality_threshold) && (mean_score_reverse < quality_threshold))
 				{
 				fprintf(fp_forward_se_out, "@%s\n%s\n+\n%s\n", seq_forward->name.s, seq_forward->seq.s, seq_forward->qual.s);
+				lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][FORWARD_ONLY]++;
 				forward_se += 1;
 				} else
 				{
 				if ((mean_score_forward < quality_threshold) && (mean_score_reverse >= quality_threshold))
 					{
 					fprintf(fp_reverse_se_out, "@%s\n%s\n+\n%s\n", seq_reverse->name.s, seq_reverse->seq.s, seq_reverse->qual.s);
+					lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][REVERSE_ONLY]++;
 					reverse_se += 1;
-					} else discarded_pairs += 1;
+					} else
+						{
+						lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][BOTH_DISCARDED]++;
+						discarded_pairs += 1;
+						}
 				}
 			}
 		}
 
-	//printf("return value: %d\n", l_forward);
+	printf("Paires retained:\t%i\nForward only retained:\t%i\nReverse only retained:\t%i\nPairs discarded:\t%i\n", paired, forward_se, reverse_se, discarded_pairs);
+	printf("\n");
+	printf("instrument_id\trun_number\tflowcell_id\tlane_number\ttile\tboth_retained\tforward_only\treverse_only\tboth_discarded\n");
+
+	//printf("%i", number_of_lanes);
+
+	for (int i = 0; i < number_of_lanes; i++)
+		{
+		//printf("%s\n", lane_filter_stat_array[i].instrument_id);
+		//printf("%i\n", lane_filter_stat_array[i].run_number);
+		//printf("%s\n", lane_filter_stat_array[i].flowcell_id);
+		//printf("%i\n", lane_filter_stat_array[i].lane_number);
+
+		for (int s = 1; s < SIDE_NUMBER; s++)
+			{
+			for (int w = 1; w < SWATCH_PER_SIDE_NUMBER; w++)
+				{
+				for (int t = 1; t < TILE_PER_SWATCH_NUMBER; t++)
+					{
+					//printf("%i\t%i\t%i\n", s, w, t);
+					printf("%s\t%i\t%s\t%i\t%i%i%02i\t%i\t%i\t%i\t%i\n",
+						   lane_filter_stat_array[i].instrument_id,
+						   lane_filter_stat_array[i].run_number,
+						   lane_filter_stat_array[i].flowcell_id,
+						   lane_filter_stat_array[i].lane_number,
+						   s, w, t,
+						   lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_RETAINED],
+						   lane_filter_stat_array[i].tile_stats[s][w][t][FORWARD_ONLY],
+						   lane_filter_stat_array[i].tile_stats[s][w][t][REVERSE_ONLY],
+						   lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_DISCARDED]);
+
+					}
+				}
+			}
+		}
+	//printf("%i\t%i\n", name_type, quality_offset);
+
 	kseq_destroy(seq_forward);
 	kseq_destroy(seq_reverse);
 	gzclose(fp_forward);
@@ -111,6 +151,6 @@ int main(int argc, char *argv[])
 	fclose(fp_reverse_pe_out);
 	fclose(fp_reverse_se_out);
 
-	printf("Paires retained:\t%i\nForward only retained:\t%i\nReverse only retained:\t%i\nPairs discarded:\t%i\n", paired, forward_se, reverse_se, discarded_pairs);
+
 	return 0;
 	}

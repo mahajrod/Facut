@@ -41,12 +41,34 @@ struct read_name parse_read_name(char *name, int mode)
 	return parsed_name;
 	}
 
-int compare_read_name_with_stat_struct(struct illumina_tile_stat stat_struct, struct read_name name)
+int compare_read_name_with_stat_struct(struct illumina_lane_stat stat_struct, struct read_name name)
 	{
-	//if ((illumina_tile_stat.run_number != read_name) or () or ())
-	//	{
-	//	return 0;
-	//	}
+	if ((strcmp(stat_struct.instrument_id,name.instrument_id) != 0) || (stat_struct.run_number != name.run_number) || \
+		(strcmp(stat_struct.instrument_id,name.instrument_id) != 0) || (stat_struct.lane_number != name.lane_number))
+		{
+		return 0;
+		}
 	return 1;
+	}
+
+int find_lane(struct illumina_lane_stat lane_stats[], struct read_name name, int number_of_lanes, int previous_lane)
+	{
+	//printf("aaaa");
+	if (previous_lane == -1) return -1;
+	//returns -1 if read is from new lane
+
+	if (compare_read_name_with_stat_struct(lane_stats[previous_lane], name) == 1)
+		{
+		return previous_lane;
+		}
+
+	for (int i = 0; i < number_of_lanes; i ++)
+		{
+		if (compare_read_name_with_stat_struct(lane_stats[i], name) == 1)
+			{
+			return i;
+			}
+		}
+	return -1;
 	}
 

@@ -10,12 +10,16 @@
 #include "stat.h"
 #include "parse_options.h"
 
+#define MAX_NUMBER_OF_LANES 50	//At moment lane stat array is static - just to simplify
 gzFile fp_forward, fp_reverse;
 FILE *fp_forward_pe_out, *fp_forward_se_out, *fp_reverse_pe_out, *fp_reverse_se_out;
 long long int total_score_forward = 0, total_score_reverse = 0;
 long long int paired = 0, forward_se = 0, reverse_se = 0, discarded_pairs = 0;
 double mean_score_forward = 0, mean_score_reverse = 0;
-int len_forward, len_reverse;
 int l_forward, l_reverse;
+
+struct read_name parsed_forward_name;
+struct illumina_lane_stat lane_filter_stat_array[MAX_NUMBER_OF_LANES];
+int number_of_lanes = 0, previous_lane_number = -1, lane_index = -1;
 
 #endif // FILTER_BY_MEAN_QUALITY_H_
