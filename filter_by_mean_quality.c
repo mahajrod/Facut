@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		//free(read_name_copy);
 		//INIT_LANE_STAT_BY_READ_NAME(lane_filter_stat_array[0], parsed_forward_name);
 		//printf()
-		printf("%s\n", parsed_forward_name.flowcell_id);
+		//printf("%s\n", parsed_forward_name.flowcell_id);
 
 		lane_index = find_lane(lane_filter_stat_array, parsed_forward_name, number_of_lanes, previous_lane_number);
 

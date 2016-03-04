@@ -38,7 +38,7 @@ struct read_name parse_read_name(char *name_copy, int mode)
 	parsed_name.side = tile_numbers[0];
 	parsed_name.swatch = tile_numbers[1];
 	parsed_name.tile = tile_numbers[2];
-	printf("%s\n", parsed_name.flowcell_id);
+	//printf("%s\n", parsed_name.flowcell_id);
 	return parsed_name;
 	}
 
