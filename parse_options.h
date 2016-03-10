@@ -43,12 +43,15 @@ int option_index;
 			{	\
 			case 'h':	\
 				{	\
-				printf("This is demo help. Try -h or --help.\n");	\
-				printf("option_index = %d (\"%s\",%d,%c)\n",	\
-						option_index,	\
-						long_options[option_index].name,	\
-						long_options[option_index].has_arg,	\
-						long_options[option_index].val);	\
+				printf("Usage:\n\tfilter_by_mean_quality -t QUALITY_THRESHOLD -q QUALITY_SCORE -n READ_NAME_TYPE  -f FORWARD_READS -r REVERSE_READS -o OUTPUT_PREFIX\n");\
+				printf("Options:\n");	\
+				printf("    -t/--quality_threshold    INT    Threshold for minimum mean quality of reads\n"); \
+				printf("    -q/--quality_score        STR    Type of quality score. Possible variants: phred33, phred64. Default: phred64\n"); \
+				printf("    -n/--name_type            STR    Name type of reads in file. Possible variants: short, illumina\n"); \
+				printf("    -f/--forward_reads        STR    File with forward reads\n"); \
+				printf("    -r/--reverse_reads        STR    File with reverse reads\n"); \
+				printf("    -o/--output_prefix        STR    Prefix of output files\n"); \
+				exit(0); \
 				break;	\
 				};	\
 			case 'f':	\
