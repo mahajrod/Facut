@@ -69,7 +69,6 @@ int option_index;
 				if (strcmp(optarg,"phred33") == 0)	\
 					{	\
 					quality_offset = 33;	\
-					printf("%i\n", quality_offset);	\
 					} else quality_offset = 64; \
 				break;	\
 				};	\
@@ -93,7 +92,6 @@ int option_index;
 				if (strcmp(optarg,"short") == 0)	\
 					{	\
 					name_type = 2;	\
-					printf("%s\n", optarg); \
 					break;	\
 					}	\
 				if (strcmp(optarg,"illumina") == 0)	\

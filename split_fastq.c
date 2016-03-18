@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 	//-------------------------------------------------------
 	kseq_t *seq_input;
 
+	char * comment;
 	fp_input = gzopen(input_file, "r");
 
 	seq_input = kseq_init(fp_input);
@@ -27,10 +28,14 @@ int main(int argc, char *argv[])
 
 	while ((l_input = kseq_read(seq_input)) >= 0)
 		{
-		fprintf(fp_forward_out, "@%s\n%s\n+\n%s\n", seq_input->name.s, seq_input->seq.s, seq_input->qual.s);
+
+		KSEQ_WRITE(fp_forward_out, seq_input);
+
 		if ((l_input = kseq_read(seq_input)) >= 0)
 			{
-			fprintf(fp_reverse_out, "@%s\n%s\n+\n%s\n", seq_input->name.s, seq_input->seq.s, seq_input->qual.s);
+
+			KSEQ_WRITE(fp_reverse_out, seq_input);
+
 			}
 		else
 			{

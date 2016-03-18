@@ -26,6 +26,7 @@
 /* Contact: Heng Li <lh3@sanger.ac.uk> */
 
 /* Last Modified: 12APR2009 */
+/* Added KSEQ_WRITE by S.F. Kliver 18MAR2015*/
 
 #ifndef AC_KSEQ_H
 #define AC_KSEQ_H
@@ -33,6 +34,15 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+
+#define KSEQ_WRITE(out_fd, kseq_t_object)	\
+		fprintf(out_fd, "@%s%s%s\n%s\n+\n%s\n",	\
+				kseq_t_object->name.s,	\
+				kseq_t_object->comment.l == 0 ? "" : " ", 	\
+				kseq_t_object->comment.l == 0 ? "" : kseq_t_object->comment.s,	\
+				kseq_t_object->seq.s,	\
+				kseq_t_object->qual.s);
+
 
 #define KS_SEP_SPACE 0 // isspace(): \t, \n, \v, \f, \r
 #define KS_SEP_TAB   1 // isspace() && !' '
@@ -221,3 +231,5 @@ typedef struct __kstring_t {
 	__KSEQ_READ
 
 #endif
+
+

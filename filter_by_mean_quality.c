@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	strcpy(reverse_se_out_file, output_prefix);
 	strcat(reverse_se_out_file, "_2.se.fq");
 
-	printf("%i", strlen(forward_se_out_file));
+	//printf("%i", strlen(forward_se_out_file));
 
 	fp_forward_pe_out = fopen(forward_pe_out_file, "w");
 	fp_forward_se_out = fopen(forward_se_out_file, "w");
@@ -83,23 +83,28 @@ int main(int argc, char *argv[])
 
 		if ((mean_score_forward >= quality_threshold) && (mean_score_reverse >= quality_threshold))
 			{
+			KSEQ_WRITE(fp_forward_pe_out, seq_forward);
+			KSEQ_WRITE(fp_reverse_pe_out, seq_reverse);
+			/*
 			fprintf(fp_forward_pe_out, "@%s\n%s\n+\n%s\n", seq_forward->name.s, seq_forward->seq.s, seq_forward->qual.s);
 			fprintf(fp_reverse_pe_out, "@%s\n%s\n+\n%s\n", seq_reverse->name.s, seq_reverse->seq.s, seq_reverse->qual.s);
-
+			*/
 			lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][BOTH_RETAINED]++;
 			paired += 1;
 			} else
 			{
 			if ((mean_score_forward >= quality_threshold) && (mean_score_reverse < quality_threshold))
 				{
-				fprintf(fp_forward_se_out, "@%s\n%s\n+\n%s\n", seq_forward->name.s, seq_forward->seq.s, seq_forward->qual.s);
+				KSEQ_WRITE(fp_forward_se_out, seq_forward);
+				//fprintf(fp_forward_se_out, "@%s\n%s\n+\n%s\n", seq_forward->name.s, seq_forward->seq.s, seq_forward->qual.s);
 				lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][FORWARD_ONLY]++;
 				forward_se += 1;
 				} else
 				{
 				if ((mean_score_forward < quality_threshold) && (mean_score_reverse >= quality_threshold))
 					{
-					fprintf(fp_reverse_se_out, "@%s\n%s\n+\n%s\n", seq_reverse->name.s, seq_reverse->seq.s, seq_reverse->qual.s);
+					KSEQ_WRITE(fp_reverse_se_out, seq_reverse);
+					//fprintf(fp_reverse_se_out, "@%s\n%s\n+\n%s\n", seq_reverse->name.s, seq_reverse->seq.s, seq_reverse->qual.s);
 					lane_filter_stat_array[lane_index].tile_stats[parsed_forward_name.side][parsed_forward_name.swatch][parsed_forward_name.tile][REVERSE_ONLY]++;
 					reverse_se += 1;
 					} else
