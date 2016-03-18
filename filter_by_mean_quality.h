@@ -9,7 +9,7 @@
 
 #include "kseq.h"
 #include "stat.h"
-#include "parse_options.h"
+#include "filter_by_mean_quality_options.h"
 
 #define MAX_NUMBER_OF_LANES 50	//At moment lane stat array is static - just to simplify
 gzFile fp_forward, fp_reverse;

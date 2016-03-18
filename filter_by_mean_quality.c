@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
 	char forward_se_out_file[strlen(output_prefix) + 9];
 	char reverse_pe_out_file[strlen(output_prefix) + 9];
 	char reverse_se_out_file[strlen(output_prefix) + 9];
+
+	//printf("%i", strlen(forward_se_out_file));
 	strcpy(forward_pe_out_file, output_prefix);
 	strcat(forward_pe_out_file, "_1.pe.fq");
 
@@ -28,6 +30,8 @@ int main(int argc, char *argv[])
 	strcat(reverse_pe_out_file, "_2.pe.fq");
 	strcpy(reverse_se_out_file, output_prefix);
 	strcat(reverse_se_out_file, "_2.se.fq");
+
+	printf("%i", strlen(forward_se_out_file));
 
 	fp_forward_pe_out = fopen(forward_pe_out_file, "w");
 	fp_forward_se_out = fopen(forward_se_out_file, "w");
@@ -50,7 +54,6 @@ int main(int argc, char *argv[])
 
 		lane_index = find_lane(lane_filter_stat_array, parsed_forward_name, number_of_lanes, previous_lane_number);
 
-
 		if (lane_index == -1)
 			{
 			lane_index++;
@@ -58,7 +61,6 @@ int main(int argc, char *argv[])
 			previous_lane_number = lane_index;
 			number_of_lanes++;
 			} else free(read_name_copy); // retain copied name in memory only for name of first read in lane;
-
 
 		//printf("%s\t%s\n", parsed_forward_name.instrument_id, parsed_forward_name.flowcell_id);
 		//printf("%i\t%i\t%i\n", forward_name.side, forward_name.swatch, forward_name.tile);
@@ -128,6 +130,10 @@ int main(int argc, char *argv[])
 				{
 				for (int t = 1; t < TILE_PER_SWATCH_NUMBER; t++)
 					{
+					if (lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_RETAINED] +
+						lane_filter_stat_array[i].tile_stats[s][w][t][FORWARD_ONLY] +
+					    lane_filter_stat_array[i].tile_stats[s][w][t][REVERSE_ONLY] +
+						lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_DISCARDED] == 0) continue;
 					//printf("%i\t%i\t%i\n", s, w, t);
 					printf("%s\t%i\t%s\t%i\t%i%i%02i\t%i\t%i\t%i\t%i\n",
 						   lane_filter_stat_array[i].instrument_id,
