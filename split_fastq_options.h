@@ -36,7 +36,7 @@ int option_index;
 				printf("Usage:\n\tsplit_fastq -i INPUT_FILE -o OUTPUT_PREFIX\n");\
 				printf("Options:\n");	\
 				printf("    -i/--input_file           STR    File with paired reads\n"); \
-				printf("    -o/--output_prefix        STR    Prefix of output files\n"); \
+				printf("    -p/--output_prefix        STR    Prefix of output files\n"); \
 				exit(0); \
 				break;	\
 				};	\

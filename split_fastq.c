@@ -34,13 +34,13 @@ int main(int argc, char *argv[])
 			}
 		else
 			{
-			printf("Truncated input file");
+			printf("Truncated input file\n");
 			exit(-1);
 			}
 		number_of_pairs++;
 		}
 
-	printf("Total pairs\t%i", number_of_pairs);
+	printf("Total pairs\t%i\n", number_of_pairs);
 
 	kseq_destroy(seq_input);
 	gzclose(fp_input);
