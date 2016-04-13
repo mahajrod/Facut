@@ -12,10 +12,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//this structure supports lanes with 96 tiles only
 #define SIDE_NUMBER 2+1
 #define SWATCH_PER_SIDE_NUMBER  3+1
-#define TILE_PER_SWATCH_NUMBER  16+1
+#define TILE_PER_SWATCH_NUMBER  64+1
 #define	NUMBER_OF_STATISTICS	4
 
 #define BOTH_RETAINED	0

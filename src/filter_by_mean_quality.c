@@ -139,12 +139,10 @@ int main(int argc, char *argv[])
 				{
 				for (int t = 1; t < TILE_PER_SWATCH_NUMBER; t++)
 					{
-					/*
 					if (lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_RETAINED] +
 						lane_filter_stat_array[i].tile_stats[s][w][t][FORWARD_ONLY] +
 					    lane_filter_stat_array[i].tile_stats[s][w][t][REVERSE_ONLY] +
 						lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_DISCARDED] == 0) continue;
-					*/
 					//printf("%i\t%i\t%i\n", s, w, t);
 					printf("%s\t%i\t%s\t%i\t%i%i%02i\t%i\t%i\t%i\t%i\n",
 						   lane_filter_stat_array[i].instrument_id,
