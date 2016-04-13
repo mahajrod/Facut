@@ -45,7 +45,7 @@ struct read_name parse_read_name(char *name_copy, int mode)
 int compare_read_name_with_stat_struct(struct illumina_lane_stat stat_struct, struct read_name name)
 	{
 	if ((strcmp(stat_struct.instrument_id,name.instrument_id) != 0) || (stat_struct.run_number != name.run_number) || \
-		(strcmp(stat_struct.instrument_id,name.instrument_id) != 0) || (stat_struct.lane_number != name.lane_number))
+		(strcmp(stat_struct.flowcell_id,name.flowcell_id) != 0) || (stat_struct.lane_number != name.lane_number))
 		{
 		return 0;
 		}
