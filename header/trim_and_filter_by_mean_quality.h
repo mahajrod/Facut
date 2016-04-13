@@ -25,7 +25,7 @@ int retain_forward = 1, retain_reverse = 1;
 
 struct read_name parsed_forward_name;
 struct illumina_lane_stat lane_filter_stat_array[MAX_NUMBER_OF_LANES];
-int number_of_lanes = 0, previous_lane_number = -1, lane_index = -1;
+int number_of_lanes = 0, previous_lane_number = -1, lane_index = -1, current_lane_index = -1;
 
 char *read_name_copy;
 #endif // FILTER_BY_MEAN_QUALITY_H_

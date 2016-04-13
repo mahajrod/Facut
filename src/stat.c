@@ -63,7 +63,7 @@ int find_lane(struct illumina_lane_stat lane_stats[], struct read_name name, int
 		return previous_lane;
 		}
 
-	for (int i = 0; i < number_of_lanes; i ++)
+	for (int i = 0; i < number_of_lanes; i++)
 		{
 		if (compare_read_name_with_stat_struct(lane_stats[i], name) == 1)
 			{
