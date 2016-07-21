@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/subsample_fastq.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/filter_by_mean_quality.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/split_fastq.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/stat.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/trim_and_filter_by_mean_quality.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/trim_and_filter_by_mean_quality.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/filter_by_mean_quality.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/kseq.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/stat.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/filter_by_mean_quality_options.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/subsample_fastq_options.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/trim_and_filter_by_mean_quality_options.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/split_fastq_options.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/subsample_fastq.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/header/split_fastq.h" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Header Search Paths">
+        <CLASSES>
+          <root url="file:///usr/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+          <root url="file:///usr/local/include" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///usr/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+          <root url="file:///usr/local/include" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

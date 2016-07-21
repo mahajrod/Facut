@@ -12,14 +12,17 @@
 #include <stdlib.h>
 #include <getopt.h>
 
-const char *short_options = "hsgq:f:r:p:t:n:";
+const char *short_options = "hmsgq:f:r:p:t:n:u";
 char *forward_reads, *reverse_reads, *output_prefix;
 long long int quality_threshold;
 short int per_tile_stat = 0;
+short int miseq = 0;
+
 
 int quality_offset = 0;
 int name_type = 0;
-
+int unpaired = 0;
+//int single;
 static struct option long_options[] =
 		        {
 		          {"help",               no_argument,       NULL, 'h'},
@@ -30,6 +33,7 @@ static struct option long_options[] =
 		          {"quality_threshold",  required_argument, NULL, 't'},
 		          {"per_tile_stat",      no_argument,       NULL, 's'},
 		          {"name_type",      	 required_argument, NULL, 'n'},
+                  {"unpaired",      	 no_argument,       NULL, 'u'},
 		          {0, 0, 0, 0}
 		        };
 
@@ -47,11 +51,17 @@ int option_index;
 				printf("Options:\n");	\
 				printf("    -t/--quality_threshold    INT    Threshold for minimum mean quality of reads\n"); \
 				printf("    -q/--quality_score        STR    Type of quality score. Possible variants: phred33, phred64. Default: phred64\n"); \
-				printf("    -n/--name_type            STR    Name type of reads in file. Possible variants: short, illumina\n"); \
+				printf("    -n/--name_type            STR    Name type of reads in file. Possible variants: short, illumina, miseq\n"); \
 				printf("    -f/--forward_reads        STR    File with forward reads\n"); \
-				printf("    -r/--reverse_reads        STR    File with reverse reads\n"); \
+				printf("    -r/--reverse_reads        STR    File with reverse reads. Argument is ignored if -u/--unpaired option is set\n"); \
 				printf("    -p/--output_prefix        STR    Prefix of output files\n"); \
+                printf("    -u/--unpaired                    Reads are unpaired(single-end)\n"); \
 				exit(0); \
+				break;	\
+				};	\
+            case 'u':	\
+				{	\
+                unpaired = 1; \
 				break;	\
 				};	\
 			case 'f':	\
@@ -97,6 +107,11 @@ int option_index;
 				if (strcmp(optarg,"illumina") == 0)	\
 					{	\
 					name_type = 1;	\
+					break; \
+					}	\
+				if (strcmp(optarg,"miseq") == 0)	\
+					{	\
+					name_type = 3;	\
 					break; \
 					}	\
 				}	\

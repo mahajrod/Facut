@@ -21,6 +21,7 @@ int l_forward, l_reverse;
 
 struct read_name parsed_forward_name;
 struct illumina_lane_stat lane_filter_stat_array[MAX_NUMBER_OF_LANES];
+struct illumina_miseq_lane_stat miseq_lane_filter_stat_array[MAX_NUMBER_OF_LANES];
 int number_of_lanes = 0, previous_lane_number = -1, lane_index = -1, current_lane_index = -1;
 
 char *read_name_copy;
