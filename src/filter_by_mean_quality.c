@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 			fp_forward_pe_out = fopen(forward_pe_out_file, "w");
 			}
 	//printf("%i", strlen(forward_se_out_file));
-        
+
 	while ((l_forward = kseq_read(seq_forward)) >= 0)
 		{
         if (unpaired == 0) {
@@ -207,20 +207,20 @@ int main(int argc, char *argv[])
 		printf("instrument_id\trun_number\tflowcell_id\tlane_number\ttile\tretained\tdiscarded\n");
 
 		//printf("%i", number_of_lanes);
-
 		for (int i = 0; i < number_of_lanes; i++) {
 			//printf("%s\n", lane_filter_stat_array[i].instrument_id);
 			//printf("%i\n", lane_filter_stat_array[i].run_number);
 			//printf("%s\n", lane_filter_stat_array[i].flowcell_id);
 			//printf("%i\n", lane_filter_stat_array[i].lane_number);
-
 			for (int s = 1; s < SIDE_NUMBER; s++) {
 				for (int w = 1; w < SWATCH_PER_SIDE_NUMBER; w++) {
 					for (int t = 1; t < TILE_PER_SWATCH_NUMBER; t++) {
+						//printf("DDDDDDDD\n");
 						if (lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_RETAINED] +
 							lane_filter_stat_array[i].tile_stats[s][w][t][BOTH_DISCARDED] == 0)
 							continue;
 						//printf("%i\t%i\t%i\n", s, w, t);
+						//printf("BBBBBBBBB\n");
 						printf("%s\t%i\t%s\t%i\t%i%i%02i\t%i\t%i\n",
 							   lane_filter_stat_array[i].instrument_id,
 							   lane_filter_stat_array[i].run_number,
