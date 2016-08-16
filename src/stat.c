@@ -5,6 +5,8 @@ struct read_name parse_read_name(char *name_copy, int mode)
 	//1: full read  name template @<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos> <read>:<is filtered>:<control number>:<index sequence>
 	//2: short read name template <flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos>#index/read
 	//3: Miseq name template same as 1 but tile is coded by 5 digits
+	//4: IonTrorrent
+	//5: SRA names
 	struct read_name parsed_name;
 	char *parsed[5];
 	int tile_numbers[4];
@@ -56,6 +58,19 @@ struct read_name parse_read_name(char *name_copy, int mode)
 			parsed_name.tile = 1;
 			return parsed_name;
 			break;
+			}
+
+		case 5: //SRA names
+			{
+			parsed_name.instrument_id = ".";
+			parsed_name.run_number = 0;
+			parsed_name.flowcell_id = ".";
+			parsed_name.lane_number = 1;
+			parsed_name.side = 1;
+			parsed_name.group = 1;
+			parsed_name.swatch = 1;
+			parsed_name.tile = 1;
+			return parsed_name;
 			}
 		}
 	parsed_name.side = tile_numbers[0];
