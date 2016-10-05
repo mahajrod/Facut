@@ -44,6 +44,8 @@ struct illumina_lane_stat
 	char *flowcell_id;
 	unsigned int lane_number;
 	unsigned long long int tile_stats[SIDE_NUMBER][SWATCH_PER_SIDE_NUMBER][TILE_PER_SWATCH_NUMBER][NUMBER_OF_STATISTICS];
+	FILE *forward_reads_fd;
+	FILE *reverse_reads_fd;
 	};
 
 struct illumina_miseq_lane_stat
