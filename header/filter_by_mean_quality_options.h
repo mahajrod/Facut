@@ -51,7 +51,7 @@ int option_index;
 				printf("Options:\n");	\
 				printf("    -t/--quality_threshold    INT    Threshold for minimum mean quality of reads\n"); \
 				printf("    -q/--quality_score        STR    Type of quality score. Possible variants: phred33, phred64. Default: phred64\n"); \
-				printf("    -n/--name_type            STR    Name type of reads in file. Possible variants: short, illumina, iontorrent, miseq\n"); \
+				printf("    -n/--name_type            STR    Name type of reads in file. Possible variants: short, illumina, iontorrent, miseq, completegenomics\n"); \
 				printf("    -f/--forward_reads        STR    File with forward reads\n"); \
 				printf("    -r/--reverse_reads        STR    File with reverse reads. Argument is ignored if -u/--unpaired option is set\n"); \
 				printf("    -p/--output_prefix        STR    Prefix of output files\n"); \
@@ -117,6 +117,11 @@ int option_index;
 				if (strcmp(optarg,"iontorrent") == 0)	\
 					{	\
 					name_type = 4;	\
+					break; \
+					}	\
+				if (strcmp(optarg,"completegenomics") == 0)	\
+					{	\
+					name_type = 6;	\
 					break; \
 					}	\
 				}	\
