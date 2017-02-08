@@ -72,6 +72,18 @@ struct read_name parse_read_name(char *name_copy, int mode)
 			parsed_name.tile = 1;
 			return parsed_name;
 			}
+		case 6: //completegenomics names
+			{
+				parsed_name.instrument_id = ".";
+				parsed_name.run_number = 0;
+				parsed_name.flowcell_id = ".";
+				parsed_name.lane_number = 1;
+				parsed_name.side = 1;
+				parsed_name.group = 1;
+				parsed_name.swatch = 1;
+				parsed_name.tile = 1;
+				return parsed_name;
+			}
 		}
 	parsed_name.side = tile_numbers[0];
 	if (mode == 3)
